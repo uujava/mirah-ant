@@ -171,7 +171,7 @@ public class MirahClassLoader extends BaseClassLoader{
                                     context.get(ClassLoader.class), 
                                     null
                             );
-                            scope.addImport(packageName+".*");
+                            if ( packageName != null ) scope.addImport(packageName+".*");
                             if ( !scopeStack.isEmpty()){
                                 scopeStack.pop();
                             }
@@ -193,9 +193,10 @@ public class MirahClassLoader extends BaseClassLoader{
                              if ( lastFoundClass != null ){
                                  return true;
                              }
-                             String className = packageName.
-                                     replaceAll("\\.", "/")+"/"+
-                                     node.name().identifier();
+                             String className = packageName != null
+                                    ? packageName.replaceAll("\\.", "/")+"/"+
+                                      node.name().identifier()
+                                    : node.name().identifier();                             
                              if ( type.getInternalName().equals(className)){
                                  ClassWriter writer = new ClassWriter(1);
                                  
