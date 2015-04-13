@@ -24,6 +24,7 @@ import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
+import javax.tools.ToolProvider;
 
 /**
  *
@@ -82,7 +83,7 @@ public class JavaStubFactory {
         final Set<ClassNode> returnMap = new HashSet<>();
         File tempFile = file;
 
-        JavaCompiler compiler = JavacTool.create();
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         MyFileObject[] fos = new MyFileObject[]{new MyFileObject(tempFile)};
 
         JavacTask task = (JavacTask) compiler.getTask(

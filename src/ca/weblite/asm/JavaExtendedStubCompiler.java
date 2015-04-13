@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,10 +43,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.lang.model.element.Modifier;
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
+import javax.tools.ToolProvider;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -56,6 +59,8 @@ import org.objectweb.asm.tree.ClassNode;
  * @author shannah
  */
 public class JavaExtendedStubCompiler  {
+
+    static Logger LOG = Logger.getLogger(JavaExtendedStubCompiler.class.getCanonicalName());
     
      byte[] output;
      
@@ -63,12 +68,26 @@ public class JavaExtendedStubCompiler  {
      
      
      
+    public static void putStack(String text) {
+        for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
+            if (LOG != null) {
+                LOG.info("STACK: " + text + "-> " + ste);
+            }
+        }
+    }
      
      
      public JavaExtendedStubCompiler(Context context){
          this.context = context;
+         LOG.info("------------------------------------------------- JavaExtendedStubCompiler Context="+context);
+         LOG.info("------------------------------------------------- JavaExtendedStubCompiler Context=" + context);
+         LOG.info("------------------------------------------------- JavaExtendedStubCompiler Context=" + context);
+         LOG.info("------------------------------------------------- JavaExtendedStubCompiler Context=" + context);
+         LOG.info("------------------------------------------------- JavaExtendedStubCompiler Context=" + context);
+         LOG.info("------------------------------------------------- JavaExtendedStubCompiler Context=" + context);
+         LOG.info("------------------------------------------------- JavaExtendedStubCompiler Context=" + context);
+         putStack("xx");     
      }
-     
     
      /**
      * Wrapper for java file object so that it can be read by the TreeScanner
@@ -105,7 +124,19 @@ public class JavaExtendedStubCompiler  {
     }
     
     public List<Type> extractTypes(File sourceFile) throws IOException {
-        JavaCompiler compiler = JavacTool.create();
+        
+        LOG.info("JavaCompiler path="+JavaCompiler.class.getClassLoader().getResource("javax/tools/JavaCompiler.class"));        
+        Object c1 = JavacTool.create();
+        LOG.info("JavacTool-1 path=" + c1.getClass().getClassLoader().getResource("javax/tools/JavaCompiler.class"));        
+        LOG.info("JavacTool-1 path=" + c1.getClass().getClassLoader().getResource(c1.getClass().getName().replace(".","/")+".class"));
+
+        c1 = ToolProvider.getSystemJavaCompiler();
+        LOG.info("JavacTool-2 path=" + c1.getClass().getClassLoader().getResource("javax/tools/JavaCompiler.class"));
+        LOG.info("JavacTool-2 path=" + c1.getClass().getClassLoader().getResource(c1.getClass().getName().replace(".", "/") + ".class"));
+
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+                
+//        JavaCompiler compiler = JavacTool.create();
         MyFileObject[] fos = new MyFileObject[]{
             new MyFileObject(sourceFile)
         };
@@ -239,15 +270,68 @@ public class JavaExtendedStubCompiler  {
                 typeNames.add(type.getInternalName());
             }
         }
-        JavaCompiler compiler = JavacTool.create();
+        LOG.info("JavaCompiler sourceFile = " + sourceFile);
+        LOG.info("JavaCompiler types = " + types);
+        if ( types != null )
+        {
+            for( Type t : types )
+                LOG.info("JavaCompiler t = " + t);
+        }
+		
+		LOG.info("JavaCompiler path="+JavaCompiler.class.getClassLoader().getResource("javax/tools/JavaCompiler.class"));        
+        Object c1 = JavacTool.create();
+        LOG.info("JavacTool-3 path=" + c1.getClass().getClassLoader().getResource("javax/tools/JavaCompiler.class"));        
+        LOG.info("JavacTool-3 path=" + c1.getClass().getClassLoader().getResource(c1.getClass().getName().replace(".","/")+".class"));
+
+        c1 = ToolProvider.getSystemJavaCompiler();
+        LOG.info("JavacTool-4 path=" + c1.getClass().getClassLoader().getResource("javax/tools/JavaCompiler.class"));
+        LOG.info("JavacTool-4 path=" + c1.getClass().getClassLoader().getResource(c1.getClass().getName().replace(".", "/") + ".class"));
+
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+		        
+
+        try
+        {
+        LOG.info("JavaCompiler compiler = "+compiler);
+        Class klass = compiler.getClass();
+        URL location = klass.getResource('/' + klass.getName().replace('.', '/') + ".class"); 
+        LOG.info("JavaCompiler compiler URL = " + location);
+
+        Class [] ii = klass.getInterfaces();
+        LOG.info("JavaCompiler ii = " + ii);
+        if ( ii != null )
+        {
+           LOG.info("JavaCompiler ii.laength = " + ii.length);
+           for( int i = 0 ; i < ii.length ; i++ )
+                LOG.info("JavaCompiler ii["+i+"] = " + ii[i]);
+        }
+        
+        klass = JavacTool.class;
+        location = klass.getResource('/' + klass.getName().replace('.', '/') + ".class");
+        LOG.info("JavacTool URL = " + location);
+        }
+        catch( Exception ee)
+        {
+            LOG.info("ee22 = "+ee.getMessage());
+        }
+        
         MyFileObject[] fos = new MyFileObject[]{
             new MyFileObject(sourceFile)
         };
+        Object tt = compiler.getTask(
+                null, null, null, null, null,
+                Arrays.asList(fos)
+        );
         
+        LOG.info("JavaCompiler tt = " + tt );
+        
+        JavacTask task = (JavacTask)tt;
+        /*
         JavacTask task = (JavacTask) compiler.getTask(
                 null, null, null, null, null, 
                 Arrays.asList(fos)
         );
+        */
         Iterable<? extends CompilationUnitTree> asts = task.parse();
         TreePathScanner scanner;
         
@@ -807,4 +891,4 @@ public class JavaExtendedStubCompiler  {
     public void compile() throws IOException {
         
     }
-}
+} 
