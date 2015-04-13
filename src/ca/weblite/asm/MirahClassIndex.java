@@ -222,8 +222,9 @@ public class MirahClassIndex {
                     public boolean enterClassDefinition(
                             ClassDefinition node, 
                             Object arg) {
-                         String className = packageName.replaceAll("\\.", "/")+"/"+
-                                 node.name().identifier();
+                         String className = packageName != null
+                            ? packageName.replaceAll("\\.", "/")+"/"+ node.name().identifier()
+                            : node.name().identifier();
 
                          index.put(className, sourceFile);
 
