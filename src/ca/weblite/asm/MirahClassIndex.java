@@ -152,6 +152,9 @@ public class MirahClassIndex {
     }
     
     public void indexFile(File file){
+        LOG.info(this, "indexFile file=" + file);
+//        LOG.putStack(null);
+
         String[] paths = loader.path.split(Pattern.quote(File.pathSeparator));
         String fPath = file.getPath();
         for (String root : paths ){
@@ -165,6 +168,9 @@ public class MirahClassIndex {
     
     public void indexFile(final String sourcePath){
        MirahParser parser = new MirahParser();
+       
+       LOG.info(this,"indexFile sourcePath="+ sourcePath);
+//       LOG.putStack(null);
        InputStream contents = null;
        try {
             contents = loader.getResourceAsStream(sourcePath);
@@ -438,6 +444,8 @@ public class MirahClassIndex {
     }
     
     private void indexDirectory(File f, boolean skipDirectoryCheck) throws IOException{
+        LOG.info(this, "indexDirectory file=" + f);
+//        LOG.putStack(null);
         load(false);
         if ( !skipDirectoryCheck && !f.isDirectory() ){
             return;

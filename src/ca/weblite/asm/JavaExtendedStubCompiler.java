@@ -60,33 +60,15 @@ import org.objectweb.asm.tree.ClassNode;
  */
 public class JavaExtendedStubCompiler  {
 
-    static Logger LOG = Logger.getLogger(JavaExtendedStubCompiler.class.getCanonicalName());
-    
      byte[] output;
      
      private Context context;
      
      
-     
-    public static void putStack(String text) {
-        for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-            if (LOG != null) {
-                LOG.info("STACK: " + text + "-> " + ste);
-            }
-        }
-    }
-     
-     
      public JavaExtendedStubCompiler(Context context){
          this.context = context;
-         LOG.info("------------------------------------------------- JavaExtendedStubCompiler Context="+context);
-         LOG.info("------------------------------------------------- JavaExtendedStubCompiler Context=" + context);
-         LOG.info("------------------------------------------------- JavaExtendedStubCompiler Context=" + context);
-         LOG.info("------------------------------------------------- JavaExtendedStubCompiler Context=" + context);
-         LOG.info("------------------------------------------------- JavaExtendedStubCompiler Context=" + context);
-         LOG.info("------------------------------------------------- JavaExtendedStubCompiler Context=" + context);
-         LOG.info("------------------------------------------------- JavaExtendedStubCompiler Context=" + context);
-         putStack("xx");     
+         LOG.info(this,"JavaExtendedStubCompiler Context="+context);
+//         LOG.putStack(null);     
      }
     
      /**
@@ -125,15 +107,6 @@ public class JavaExtendedStubCompiler  {
     
     public List<Type> extractTypes(File sourceFile) throws IOException {
         
-        LOG.info("JavaCompiler path="+JavaCompiler.class.getClassLoader().getResource("javax/tools/JavaCompiler.class"));        
-        Object c1 = JavacTool.create();
-        LOG.info("JavacTool-1 path=" + c1.getClass().getClassLoader().getResource("javax/tools/JavaCompiler.class"));        
-        LOG.info("JavacTool-1 path=" + c1.getClass().getClassLoader().getResource(c1.getClass().getName().replace(".","/")+".class"));
-
-        c1 = ToolProvider.getSystemJavaCompiler();
-        LOG.info("JavacTool-2 path=" + c1.getClass().getClassLoader().getResource("javax/tools/JavaCompiler.class"));
-        LOG.info("JavacTool-2 path=" + c1.getClass().getClassLoader().getResource(c1.getClass().getName().replace(".", "/") + ".class"));
-
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
                 
 //        JavaCompiler compiler = JavacTool.create();
@@ -151,8 +124,6 @@ public class JavaExtendedStubCompiler  {
         scanner = new TreePathScanner() {
             String packageName="";
             String currPath = "";
-            
-            
             @Override
             public Object visitClass(ClassTree ct, Object p) {
                 if ( currPath.equals(packageName)){
@@ -270,68 +241,16 @@ public class JavaExtendedStubCompiler  {
                 typeNames.add(type.getInternalName());
             }
         }
-        LOG.info("JavaCompiler sourceFile = " + sourceFile);
-        LOG.info("JavaCompiler types = " + types);
-        if ( types != null )
-        {
-            for( Type t : types )
-                LOG.info("JavaCompiler t = " + t);
-        }
-		
-		LOG.info("JavaCompiler path="+JavaCompiler.class.getClassLoader().getResource("javax/tools/JavaCompiler.class"));        
-        Object c1 = JavacTool.create();
-        LOG.info("JavacTool-3 path=" + c1.getClass().getClassLoader().getResource("javax/tools/JavaCompiler.class"));        
-        LOG.info("JavacTool-3 path=" + c1.getClass().getClassLoader().getResource(c1.getClass().getName().replace(".","/")+".class"));
-
-        c1 = ToolProvider.getSystemJavaCompiler();
-        LOG.info("JavacTool-4 path=" + c1.getClass().getClassLoader().getResource("javax/tools/JavaCompiler.class"));
-        LOG.info("JavacTool-4 path=" + c1.getClass().getClassLoader().getResource(c1.getClass().getName().replace(".", "/") + ".class"));
 
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		        
-
-        try
-        {
-        LOG.info("JavaCompiler compiler = "+compiler);
-        Class klass = compiler.getClass();
-        URL location = klass.getResource('/' + klass.getName().replace('.', '/') + ".class"); 
-        LOG.info("JavaCompiler compiler URL = " + location);
-
-        Class [] ii = klass.getInterfaces();
-        LOG.info("JavaCompiler ii = " + ii);
-        if ( ii != null )
-        {
-           LOG.info("JavaCompiler ii.laength = " + ii.length);
-           for( int i = 0 ; i < ii.length ; i++ )
-                LOG.info("JavaCompiler ii["+i+"] = " + ii[i]);
-        }
-        
-        klass = JavacTool.class;
-        location = klass.getResource('/' + klass.getName().replace('.', '/') + ".class");
-        LOG.info("JavacTool URL = " + location);
-        }
-        catch( Exception ee)
-        {
-            LOG.info("ee22 = "+ee.getMessage());
-        }
-        
         MyFileObject[] fos = new MyFileObject[]{
             new MyFileObject(sourceFile)
         };
-        Object tt = compiler.getTask(
-                null, null, null, null, null,
-                Arrays.asList(fos)
-        );
-        
-        LOG.info("JavaCompiler tt = " + tt );
-        
-        JavacTask task = (JavacTask)tt;
-        /*
         JavacTask task = (JavacTask) compiler.getTask(
                 null, null, null, null, null, 
                 Arrays.asList(fos)
         );
-        */
         Iterable<? extends CompilationUnitTree> asts = task.parse();
         TreePathScanner scanner;
         
@@ -401,7 +320,7 @@ public class JavaExtendedStubCompiler  {
                     try {
                         signature = TypeUtil.getTypeSignature(type, scopeStack.peek());
                     } catch ( Throwable t){
-                        System.out.println("Failed to find signature for type");
+                        LOG.info(this,"Failed to find signature for type");
                     }
                     if ( type.indexOf("<") != -1 ){
                         type = type.substring(0, type.indexOf("<"));
