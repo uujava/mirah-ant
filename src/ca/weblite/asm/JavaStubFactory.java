@@ -84,6 +84,9 @@ public class JavaStubFactory {
         File tempFile = file;
 
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        LOG.info(this, "Compiler:" + JavaCompiler.class.getClassLoader().getResource("javax/tools/JavaCompiler.class"));
+        LOG.info(this, "Compiler:" + compiler.getClass().getClassLoader().getResource(compiler.getClass().getName().replace(".", "/") + ".class"));
+        
         MyFileObject[] fos = new MyFileObject[]{new MyFileObject(tempFile)};
 
         JavacTask task = (JavacTask) compiler.getTask(

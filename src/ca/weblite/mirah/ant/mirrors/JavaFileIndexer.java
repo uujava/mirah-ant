@@ -6,6 +6,7 @@
 
 package ca.weblite.mirah.ant.mirrors;
 
+import ca.weblite.asm.LOG;
 import ca.weblite.mirah.ant.mirrors.ClassIndex.Node;
 import ca.weblite.mirah.ant.mirrors.ClassIndex.NodeType;
 import com.sun.source.tree.ClassTree;
@@ -28,6 +29,7 @@ import java.util.Stack;
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
+import javax.tools.ToolProvider;
 
 /**
  *
@@ -115,8 +117,12 @@ public class JavaFileIndexer implements ClassIndex.Indexer {
             tempFile.delete();
             Files.copy(contents, tempFile.toPath());
 
-
-            JavaCompiler compiler = JavacTool.create();//ToolProvider.getSystemJavaCompiler();
+//            JavaCompiler compiler = JavacTool.create();//ToolProvider.getSystemJavaCompiler
+            JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+            LOG.info(this, "Compiler:" + JavaCompiler.class.getClassLoader().getResource("javax/tools/JavaCompiler.class"));
+            LOG.info(this, "Compiler:" + compiler.getClass().getClassLoader().getResource(compiler.getClass().getName().replace(".", "/") + ".class"));
+            
+            
             MyFileObject[] fos = new MyFileObject[]{new MyFileObject(tempFile)};
 
             JavacTask task = (JavacTask) compiler.getTask(null, null, null, null, null, Arrays.asList(fos));

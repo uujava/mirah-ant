@@ -5,6 +5,7 @@
  */
 package ca.weblite.mirah.ant;
 
+import ca.weblite.asm.LOG;
 import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.tree.ImportTree;
@@ -194,6 +195,9 @@ public class JavaToMirah {
     public String generateMirahStub(File javaSourceFile) throws IOException {
 
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        LOG.info(this, "Compiler:" + JavaCompiler.class.getClassLoader().getResource("javax/tools/JavaCompiler.class"));
+        LOG.info(this, "Compiler:" + compiler.getClass().getClassLoader().getResource(compiler.getClass().getName().replace(".", "/") + ".class"));
+        
         MyFileObject[] fos = new MyFileObject[]{new MyFileObject(javaSourceFile)};
         JavacTask task = (JavacTask) compiler.getTask(null, null, null, null, null, Arrays.asList(fos));
         Iterable<? extends CompilationUnitTree> asts = task.parse();

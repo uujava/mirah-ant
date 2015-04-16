@@ -172,7 +172,6 @@ public class JavaToMirahTest {
             mirahc.compile(new String[0]);
             
             JavaCompiler javac = ToolProvider.getSystemJavaCompiler();
-            
             int res = javac.run(null, System.out, System.err, "-cp", src.getPath()+":"+build.getPath(), "-sourcepath", src.getPath(), "-d", build.getPath(), src.getPath()+"/mypkg/JavaClass.java");
             
             assertEquals(0, res);

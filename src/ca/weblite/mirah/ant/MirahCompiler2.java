@@ -9,6 +9,7 @@ package ca.weblite.mirah.ant;
 import ca.weblite.asm.ASMClassLoader;
 import ca.weblite.asm.JavaExtendedStubCompiler;
 import ca.weblite.asm.JavaSourceClassLoader;
+import ca.weblite.asm.LOG;
 import ca.weblite.asm.MirahClassLoader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -535,6 +536,9 @@ public class MirahCompiler2 extends Mirahc {
     
     private void compileJavaSources(){
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        LOG.info(this, "Compiler:" + JavaCompiler.class.getClassLoader().getResource("javax/tools/JavaCompiler.class"));
+        LOG.info(this, "Compiler:" + compiler.getClass().getClassLoader().getResource(compiler.getClass().getName().replace(".", "/") + ".class"));
+        
         StringBuilder sb = new StringBuilder();
         URL[] cps = this.classpath();
         for ( int i=0; i<cps.length; i++){

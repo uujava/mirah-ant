@@ -6,6 +6,7 @@
 
 package ca.weblite.mirah.ant.mirrors;
 
+import ca.weblite.asm.LOG;
 import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.tree.ImportTree;
@@ -27,6 +28,7 @@ import javax.lang.model.element.Modifier;
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
+import javax.tools.ToolProvider;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
@@ -109,7 +111,11 @@ public class ClassReader {
         
         
         File javaSourceFile = sourceFile;
-        JavaCompiler compiler = JavacTool.create();
+//      JavaCompiler compiler = JavacTool.create();
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        LOG.info(this, "Compiler:" + JavaCompiler.class.getClassLoader().getResource("javax/tools/JavaCompiler.class"));
+        LOG.info(this, "Compiler:" + compiler.getClass().getClassLoader().getResource(compiler.getClass().getName().replace(".", "/") + ".class"));
+        
         MyFileObject[] fos = new MyFileObject[]{
             new MyFileObject(javaSourceFile)
         };

@@ -5,6 +5,7 @@
  */
 package ca.weblite.mirah.ant;
 
+import ca.weblite.asm.LOG;
 import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.tree.ImportTree;
@@ -34,6 +35,7 @@ import javax.lang.model.element.Modifier;
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
+import javax.tools.ToolProvider;
 //import org.jruby.org.objectweb.asm.Opcodes;
 import org.mirah.jvm.mirrors.AsyncMember;
 import org.mirah.jvm.mirrors.AsyncMirrorLoader;
@@ -285,7 +287,11 @@ public class JavaToMirahMirror {
      * @throws IOException 
      */
     private void generateMirahMirror(File javaSourceFile) throws IOException {
-        JavaCompiler compiler = JavacTool.create();//ToolProvider.getSystemJavaCompiler();
+//        JavaCompiler compiler = JavacTool.create();
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        LOG.info(this, "Compiler:" + JavaCompiler.class.getClassLoader().getResource("javax/tools/JavaCompiler.class"));
+        LOG.info(this, "Compiler:" + compiler.getClass().getClassLoader().getResource(compiler.getClass().getName().replace(".", "/") + ".class"));
+        
         MyFileObject[] fos = new MyFileObject[]{new MyFileObject(javaSourceFile)};
         
         JavacTask task = (JavacTask) compiler.getTask(null, null, null, null, null, Arrays.asList(fos));
