@@ -6,6 +6,7 @@
 
 package ca.weblite.mirah.ant.mirrors;
 
+import ca.weblite.asm.LOG;
 import java.io.IOException;
 
 /**
@@ -15,11 +16,13 @@ import java.io.IOException;
 public class MirahClassIndex extends ClassIndex {
     private boolean scanned = false;
     public MirahClassIndex(){
+        LOG.info(this,"create !");
         addIndexer(new MirahFileIndexer());
     }
 
     @Override
     public void scanPath(String path, String pattern) throws IOException {
+        LOG.info(this,"scanPath path="+path+" pattern="+pattern);
         if ( scanned ){
             return;
         }
@@ -29,6 +32,7 @@ public class MirahClassIndex extends ClassIndex {
 
     @Override
     public void clearCache() {
+        LOG.info(this,"clear cash!");
         scanned = false;
         super.clearCache(); //To change body of generated methods, choose Tools | Templates.
     }

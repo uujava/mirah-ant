@@ -21,13 +21,21 @@ public class LOG {
         String name = o.getClass().getSimpleName();
         if ( o instanceof Class ) name = ((Class)o).getSimpleName();
         if ( o instanceof String ) name = (String)o;
-        logger.info(""+name+":"+text);
+        logger.info("{" + Thread.currentThread().getName() + "} " + name + ":" + text);
     }
     public static void putStack(String text) {
         if (logger == null) return;
         int i = 0;
         for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
             if ( ++i > 2 ) logger.info("> " + ste);
+        }
+    }
+    public static void exception( Object o, Throwable ex )
+    {
+        if ( logger == null ) return;
+        int i = 0;
+        for (StackTraceElement ste :ex.getStackTrace()) {
+            if ( ++i > 2 ) logger.info("? " + ste);
         }
     }
     

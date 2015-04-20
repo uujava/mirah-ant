@@ -61,8 +61,8 @@ public class WLMirahCompiler {
             );
         }
         if ( destinationDirectory == null ){
-            destinationDirectory = 
-                    new File("mirahc.build.dir", "build/classes");
+            destinationDirectory = new File( 
+                 System.getProperty("mirahc.build.dir", "build/classes") );
         }
         
         if ( classPath == null ){

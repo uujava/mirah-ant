@@ -289,8 +289,6 @@ public class JavaToMirahMirror {
     private void generateMirahMirror(File javaSourceFile) throws IOException {
 //        JavaCompiler compiler = JavacTool.create();
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        LOG.info(this, "Compiler:" + JavaCompiler.class.getClassLoader().getResource("javax/tools/JavaCompiler.class"));
-        LOG.info(this, "Compiler:" + compiler.getClass().getClassLoader().getResource(compiler.getClass().getName().replace(".", "/") + ".class"));
         
         MyFileObject[] fos = new MyFileObject[]{new MyFileObject(javaSourceFile)};
         

@@ -42,7 +42,7 @@ import org.objectweb.asm.Type;
  * @author shannah
  */
 public class MirahClassIndex {
-    
+   
     
     
     private long lastModified;
@@ -115,7 +115,7 @@ public class MirahClassIndex {
                                 log(Level.SEVERE, null, ex);
                     }
                 } 
-                if ( url != null ){
+                        if (url != null) {
                     try {
                         return url.openStream();
                     } catch (Exception ex){
@@ -171,8 +171,8 @@ public class MirahClassIndex {
        
        LOG.info(this,"indexFile sourcePath="+ sourcePath);
 //       LOG.putStack(null);
-       InputStream contents = null;
-       try {
+        InputStream contents = null;
+        try {
             contents = loader.getResourceAsStream(sourcePath);
             final SourceFile sourceFile = lastSourceFile;
             long modified = sourceFile.file.lastModified();
@@ -207,7 +207,7 @@ public class MirahClassIndex {
                 err.printStackTrace();
                 return;
             }
-
+            
             if ( ast instanceof Node ){
                 Node node = (Node)ast;
                 node.accept(new NodeScanner(){
@@ -274,16 +274,16 @@ public class MirahClassIndex {
         return loader.path;
     }
     
-    public void setDirty(File f){
+    public void setDirty(File file){
         boolean found = false;
         for ( SourceFile sf : index.values()){
-            if ( sf.file.equals(f)){
+            if ( sf.file.equals(file)){
                 sf.dirty = true;
                 found = true;
             }
         }
         if ( !found ){
-            indexFile(f.getPath());
+            indexFile(file.getPath());
         }
     }
     
@@ -340,9 +340,10 @@ public class MirahClassIndex {
     }
     
     
-    private void readMtimes(File f) throws IOException{
+    private void readMtimes(File file) throws IOException{
+        //LOG.info(this,"readMtimes file="+file);
         try (ObjectInputStream ois = 
-                new ObjectInputStream(new FileInputStream(f))){
+                new ObjectInputStream(new FileInputStream(file))){
 
             mtimes = (Map<String,Long>)ois.readObject();
         } catch (ClassNotFoundException ex) {
@@ -352,14 +353,20 @@ public class MirahClassIndex {
         
     }
     
-    private void writeMtimes(File f) throws IOException {
+    private void writeMtimes(File file) throws IOException {
+        //LOG.info(this,"writeMtimes file="+file);
         try (ObjectOutputStream oos = 
-                new ObjectOutputStream(new FileOutputStream(f))){
+                new ObjectOutputStream(new FileOutputStream(file))){
             oos.writeObject(mtimes);
         }
     }
     
     public boolean load(boolean force) throws IOException{
+
+	//svd use NB indexing
+        if ( true ) return true;
+            
+        //LOG.info(this,"load force="+force+" loaded="+loaded);
         if ( force || !loaded ){
             loaded = true;
             String path = getPath();
@@ -374,6 +381,7 @@ public class MirahClassIndex {
             try {
                 readIndex(file);
             } catch (FileNotFoundException fnfe){
+                LOG.exception(this, fnfe);
                 return false;
             }
             try {
@@ -381,7 +389,7 @@ public class MirahClassIndex {
                 
                 readMtimes(mFile);
             } catch ( FileNotFoundException fnfe){
-                
+                LOG.exception(this, fnfe);
             }
             
             return true;
@@ -393,6 +401,7 @@ public class MirahClassIndex {
     
     public boolean save() throws IOException {
         String path = getPath();
+        //LOG.info(this,"save path="+path);
         if ( path == null ){
             return false;
         }
@@ -403,8 +412,13 @@ public class MirahClassIndex {
     }
     
     public void updateIndex() throws IOException {
+        
+        // заменено индексированием NB
+        if ( true ) return;
+        
         load(false);
         String path = getPath();
+        //LOG.info(this,"updateIndex updated="+updated+" path="+path);
         if ( path == null ){
             return;
         }
@@ -415,11 +429,13 @@ public class MirahClassIndex {
                 try {
                     indexDirectory(file);
                 } catch (FileNotFoundException fnfe){
-                    
+                    LOG.exception(this, fnfe);
                 }
             }
         }
         updated = true;
+        
+        //save();
     }
     
     public void deleteIndex() throws IOException{
@@ -444,12 +460,13 @@ public class MirahClassIndex {
     }
     
     private void indexDirectory(File f, boolean skipDirectoryCheck) throws IOException{
-        LOG.info(this, "indexDirectory file=" + f);
-//        LOG.putStack(null);
-        load(false);
+
         if ( !skipDirectoryCheck && !f.isDirectory() ){
             return;
         }
+        LOG.info(this, "indexDirectory file=" + f);
+//        LOG.putStack(null);
+        load(false);
         try (DirectoryStream<Path> ds = Files.newDirectoryStream(f.toPath())){
             for ( Path p : ds){
                 if ( p.toFile().getName().endsWith(".mirah")){

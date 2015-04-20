@@ -68,6 +68,7 @@ public class MirahClassLoader extends BaseClassLoader{
     }
     
     public void addFakeFile(String path, String contents) throws IOException {
+//        LOG.info(this, "addFakeFile path="+path+" contents="+contents);
         if ( index.getPath() != null ){
             String srcRoot = index.getPath();
             if ( srcRoot.indexOf(File.pathSeparator) != -1 ){
@@ -130,6 +131,8 @@ public class MirahClassLoader extends BaseClassLoader{
     }
     
     private ClassNode findClassImpl(final Type type){
+//        LOG.info(this, "findClassImpl type="+type);
+//        LOG.putStack(null);
         lastFoundClass = null;
         SourceFile sourceFile = index.findSourceFile(type);
         if ( sourceFile != null ){
@@ -292,6 +295,8 @@ public class MirahClassLoader extends BaseClassLoader{
             } catch (IOException ex) {
                 Logger.getLogger(MirahClassLoader.class.getName()).
                         log(Level.SEVERE, null, ex);
+                LOG.exception(this, ex);
+                
             }
             
             
@@ -307,6 +312,7 @@ public class MirahClassLoader extends BaseClassLoader{
     @Override
     public ClassNode findClass(final Type type){
         ClassNode out = findClassImpl(type);
+//        LOG.info(this, "findClass1 type="+type+" node="+out);
         if ( out != null ){
             return out;
         }
@@ -323,6 +329,7 @@ public class MirahClassLoader extends BaseClassLoader{
     }
     
     public void setCachePath(String path){
+//        LOG.info(this, "setCachePath path="+path);
         bytecodeLoader.setPath(path);
     }
     
@@ -335,6 +342,7 @@ public class MirahClassLoader extends BaseClassLoader{
     }
     
     public void setDirty(Type type){
+//        LOG.info(this, "setDirty type="+type);
         index.setDirty(type);
     }
     

@@ -536,8 +536,6 @@ public class MirahCompiler2 extends Mirahc {
     
     private void compileJavaSources(){
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        LOG.info(this, "Compiler:" + JavaCompiler.class.getClassLoader().getResource("javax/tools/JavaCompiler.class"));
-        LOG.info(this, "Compiler:" + compiler.getClass().getClassLoader().getResource(compiler.getClass().getName().replace(".", "/") + ".class"));
         
         StringBuilder sb = new StringBuilder();
         URL[] cps = this.classpath();
