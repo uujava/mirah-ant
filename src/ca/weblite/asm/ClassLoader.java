@@ -6,8 +6,8 @@
 
 package ca.weblite.asm;
 
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.ClassNode;
+import mirah.objectweb.asm.Type;
+import mirah.objectweb.asm.tree.ClassNode;
 
 /**
  *

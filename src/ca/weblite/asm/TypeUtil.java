@@ -15,8 +15,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import javax.lang.model.element.Modifier;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.ClassNode;
+import mirah.objectweb.asm.Opcodes;
+import mirah.objectweb.asm.tree.ClassNode;
 
 /**
  *

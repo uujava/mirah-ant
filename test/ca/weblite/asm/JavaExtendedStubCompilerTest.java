@@ -10,11 +10,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.MethodNode;
+import mirah.objectweb.asm.ClassReader;
+import mirah.objectweb.asm.Opcodes;
+import mirah.objectweb.asm.Type;
+import mirah.objectweb.asm.tree.ClassNode;
+import mirah.objectweb.asm.tree.MethodNode;
 
 /**
  *

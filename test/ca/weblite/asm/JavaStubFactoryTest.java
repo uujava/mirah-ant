@@ -14,8 +14,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.ClassNode;
+import mirah.objectweb.asm.Type;
+import mirah.objectweb.asm.tree.ClassNode;
 
 
 /**

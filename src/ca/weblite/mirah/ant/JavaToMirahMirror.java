@@ -36,10 +36,10 @@ import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
 import javax.tools.ToolProvider;
-//import org.jruby.org.objectweb.asm.Opcodes;
+//import org.jruby.mirah.objectweb.asm.Opcodes;
 import org.mirah.jvm.mirrors.AsyncMember;
 import org.mirah.jvm.mirrors.AsyncMirrorLoader;
-import org.mirah.jvm.mirrors.JVMScope;
+import org.mirah.jvm.mirrors.BetterScope;
 import org.mirah.jvm.mirrors.Member;
 import org.mirah.jvm.mirrors.MirahMethod;
 import org.mirah.jvm.mirrors.MirahMirror;
@@ -57,8 +57,8 @@ import org.mirah.typer.TypeFuture;
 import org.mirah.typer.TypeListener;
 import org.mirah.typer.Typer;
 import org.mirah.util.Context;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import mirah.objectweb.asm.Opcodes;
+import mirah.objectweb.asm.Type;
 
 /**
  * Converts Java Source files into MirahMirrors
@@ -70,8 +70,8 @@ public class JavaToMirahMirror {
     private MirrorTypeSystem typeSystem;
     private String currPackage = "";
     private Stack<MirahMirror> mirrorStack = new Stack<MirahMirror>();
-    private JVMScope scope;
-    private Scoper scoper;
+    private Scope scope;
+//    private Scoper scoper;
     private LinkedList<String> namespaceStack = new LinkedList<String>();
     private Map<String,TypeFuture> internalClassMap = new HashMap<>();
     
@@ -91,7 +91,8 @@ public class JavaToMirahMirror {
         
         typeSystem = (MirrorTypeSystem) typer.type_system();
         //System.out.println("Context is "+mirahContext);
-        scoper = (Scoper)context.get(Scoper.class);/*new SimpleScoper(new ScopeFactory(){
+//        scoper = (Scoper)context.get(Scoper.class);
+        /*new SimpleScoper(new ScopeFactory(){
 
             @Override
             public Scope newScope(Scoper scoper, Node node) {
@@ -102,7 +103,7 @@ public class JavaToMirahMirror {
             
         });*/
         //System.out.println("Setting loader");
-        typeSystem.loader_set(new SimpleAsyncMirrorLoader(context, typeSystem.loader()){
+       /* typeSystem.loader_set(new SimpleAsyncMirrorLoader(context, typeSystem.loader()){
 
             
             
@@ -126,8 +127,8 @@ public class JavaToMirahMirror {
             }
             
         });
-        
-        scope = new JVMScope(scoper);
+        */
+//        scope = new BetterScope(scoper);
         
         
     }

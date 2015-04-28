@@ -49,10 +49,10 @@ import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
 import javax.tools.ToolProvider;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.ClassNode;
+import mirah.objectweb.asm.ClassWriter;
+import mirah.objectweb.asm.Opcodes;
+import mirah.objectweb.asm.Type;
+import mirah.objectweb.asm.tree.ClassNode;
 
 /**
  *

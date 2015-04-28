@@ -35,7 +35,7 @@ import mirah.lang.ast.Node;
 import mirah.lang.ast.NodeScanner;
 import mirah.lang.ast.StreamCodeSource;
 import org.mirah.mmeta.SyntaxError;
-import org.objectweb.asm.Type;
+import mirah.objectweb.asm.Type;
 
 /**
  *

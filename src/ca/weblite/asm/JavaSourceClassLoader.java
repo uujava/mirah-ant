@@ -20,11 +20,11 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.ClassNode;
+import mirah.objectweb.asm.ClassReader;
+import mirah.objectweb.asm.ClassWriter;
+import mirah.objectweb.asm.Opcodes;
+import mirah.objectweb.asm.Type;
+import mirah.objectweb.asm.tree.ClassNode;
 
 /**
  *

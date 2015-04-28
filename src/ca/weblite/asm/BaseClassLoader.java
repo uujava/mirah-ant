@@ -9,8 +9,8 @@ package ca.weblite.asm;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.ClassNode;
+import mirah.objectweb.asm.Type;
+import mirah.objectweb.asm.tree.ClassNode;
 
 /**
  *

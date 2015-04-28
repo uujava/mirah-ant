@@ -13,9 +13,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import mirah.objectweb.asm.ClassWriter;
+import mirah.objectweb.asm.Opcodes;
+import mirah.objectweb.asm.Type;
 
 /**
  *

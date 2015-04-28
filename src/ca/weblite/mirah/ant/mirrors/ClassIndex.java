@@ -20,7 +20,7 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
-import org.objectweb.asm.tree.ClassNode;
+import mirah.objectweb.asm.tree.ClassNode;
 
 /**
  *

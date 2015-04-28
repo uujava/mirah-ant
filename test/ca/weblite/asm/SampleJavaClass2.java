@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author shannah
  */
-public class SampleJavaClass extends ArrayList {
+public class SampleJavaClass2 extends ArrayList {
     int someField;
     Object someObjField;
     protected Object protectedField;

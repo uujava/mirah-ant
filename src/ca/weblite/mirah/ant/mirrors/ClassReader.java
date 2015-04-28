@@ -29,11 +29,11 @@ import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
 import javax.tools.ToolProvider;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.InnerClassNode;
-import org.objectweb.asm.tree.MethodNode;
+import mirah.objectweb.asm.Opcodes;
+import mirah.objectweb.asm.tree.ClassNode;
+import mirah.objectweb.asm.tree.FieldNode;
+import mirah.objectweb.asm.tree.InnerClassNode;
+import mirah.objectweb.asm.tree.MethodNode;
 
 /**
  *

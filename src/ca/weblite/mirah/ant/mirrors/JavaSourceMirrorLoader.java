@@ -16,8 +16,8 @@ import org.mirah.jvm.mirrors.MirrorType;
 import org.mirah.jvm.mirrors.ResourceLoader;
 import org.mirah.jvm.mirrors.SimpleMirrorLoader;
 import org.mirah.util.Context;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.ClassNode;
+import mirah.objectweb.asm.Type;
+import mirah.objectweb.asm.tree.ClassNode;
 
 /**
  *

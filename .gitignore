@@ -1,4 +1,6 @@
 dist
 build
 nbproject/private
-test/._mirah_fake_files_cache 
+._mirah_fake_files_cache
+.idea
+*.iml
