@@ -201,13 +201,14 @@ public class JavaExtendedStubCompiler  {
             boolean recursive,
             boolean skipDirectoryCheck) 
             throws IOException{
+//        LOG.info(this,"---- compileDirectory sourceDirectory="+sourceDirectory+" skipDirectoryCheck="+skipDirectoryCheck);
         if ( !skipDirectoryCheck && !sourceDirectory.isDirectory()){
             return;
         }
         try (DirectoryStream<Path> ds = 
                 Files.newDirectoryStream(sourceDirectory.toPath())){
             for ( Path p : ds){
-                //System.out.println("Path "+p);
+//                LOG.info(this,"Path "+p);
                 if ( p.toFile().getName().endsWith(".java")){
                     compileFile(p.toFile(), sourceRoot, destinationDirectory);
                 }

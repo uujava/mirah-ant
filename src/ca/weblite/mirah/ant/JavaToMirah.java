@@ -5,7 +5,6 @@
  */
 package ca.weblite.mirah.ant;
 
-import ca.weblite.asm.LOG;
 import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.tree.ImportTree;

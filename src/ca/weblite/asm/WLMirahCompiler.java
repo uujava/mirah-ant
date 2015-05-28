@@ -54,6 +54,7 @@ public class WLMirahCompiler {
     
     
     private void setupParameters(){
+//        LOG.info(this, "setupParameters sourcePath="+sourcePath);
         if ( sourcePath == null ){
             sourcePath = System.getProperty(
                     "mirahc.source.path", 
@@ -64,23 +65,27 @@ public class WLMirahCompiler {
             destinationDirectory = new File( 
                  System.getProperty("mirahc.build.dir", "build/classes") );
         }
+//        LOG.info(this, "setupParameters destinationDirectory="+destinationDirectory);
         
         if ( classPath == null ){
             classPath = System.getProperty("mirahc.class.path", 
                             System.getProperty("java.class.path", ".")
             );
         }
+//        LOG.info(this, "setupParameters classPath="+classPath);
         
         if ( macroClassPath == null ){
             macroClassPath = 
                     System.getProperty("mirahc.macro.class.path", classPath);
         }
+//        LOG.info(this, "setupParameters macroClassPath="+macroClassPath);
         
         if ( bootClassPath == null ){
             bootClassPath = System.getProperty("mirahc.boot.class.path",
                     System.getProperty("sun.boot.class.path", null)
             );
         }
+//        LOG.info(this, "setupParameters bootClassPath="+bootClassPath);
         
         if ( classCacheDirectory == null ){
             classCacheDirectory = new File(
@@ -89,6 +94,7 @@ public class WLMirahCompiler {
                     )
             );
         }
+//        LOG.info(this, "setupParameters classCacheDirectory="+classCacheDirectory);
         
         if ( javaStubDirectory == null ){
             javaStubDirectory = new File(
@@ -97,10 +103,12 @@ public class WLMirahCompiler {
                     )
             );
         }
+//        LOG.info(this, "setupParameters javaStubDirectory="+javaStubDirectory);
         
         if ( jvmVersion == null ){
             jvmVersion = System.getProperty("mirahc.jvm.version", null);
         }
+//        LOG.info(this, "setupParameters jvmVersion="+jvmVersion);
         
     }
     
@@ -147,16 +155,20 @@ public class WLMirahCompiler {
             } catch (IOException ex){
                 throw new RuntimeException(ex);
             }
+//            LOG.info(this, "fakeFiles size = "+fakeFiles.size());
             for ( Map.Entry<String,String> e : fakeFiles.entrySet()){
                 try {
+//                    LOG.info(this, "add fakeFiles key = "+e.getKey() + " value=" + e.getValue()+" mirahClassLoader="+mirahClassLoader);
                     mirahClassLoader.addFakeFile(e.getKey(), e.getValue());
                 } catch (IOException ex) {
+//                    LOG.exception(this, ex);
                     throw new RuntimeException(ex);
                 }
             }
             try {
                 mirahClassLoader.getIndex().updateIndex();
             } catch (IOException ex) {
+//                LOG.exception(this, ex);
                 throw new RuntimeException(ex);
             }
             
@@ -168,29 +180,34 @@ public class WLMirahCompiler {
                 getMirahc().setJvmVersion(jvmVersion);
             }
             getMirahc().setBootClasspath(bootClassPath);
-            //System.out.println("Bootclasspath is "+bootClassPath);
+//            LOG.info(this, "Bootclasspath is "+bootClassPath);
             String cp = javaStubDirectory.getPath()+File.pathSeparator+classPath+(macroClassPath!=null?(File.pathSeparator+macroClassPath):"");
             getMirahc().setClasspath(cp);
-            //System.out.println("Compiling with classpath "+cp);
+//            LOG.info(this, "Compiling with classpath "+cp+" getMirahc()="+getMirahc());
             getMirahc().setMacroClasspath(
                     javaStubDirectory.getPath()+File.pathSeparator+
                             cp+
                             File.pathSeparator+
                             macroClassPath
             );
-            //System.out.println("Macro classpath is "+javaStubDirectory.getPath()+File.pathSeparator+
-                            //macroClassPath);
+//            LOG.info(this, "Macro classpath is "+javaStubDirectory.getPath()+File.pathSeparator+
+//                            macroClassPath);
+            
+//            LOG.info(this, "destinationDirectory = "+destinationDirectory);
+            if ( destinationDirectory != null )
             getMirahc().setDestination(destinationDirectory.getPath());
+//            LOG.info(this, "getDiagnostics() = "+getDiagnostics());
             if ( getDiagnostics() != null ){
                 getMirahc().setDiagnostics(getDiagnostics());
             }
+//            LOG.info(this, "getDebugger() = "+getDebugger());
             if ( getDebugger() != null ){
                 getMirahc().setDebugger(getDebugger());
             }
             for ( Map.Entry<String,String> e : fakeFiles.entrySet()){
+//                LOG.info(this, "fakeFiles() = "+e.getValue());
                 getMirahc().addFakeFile(e.getKey(), e.getValue());
             }
-
         }
     }
     
@@ -201,19 +218,25 @@ public class WLMirahCompiler {
         //}
         setup();
         if ( precompileJavaStubs ){
-            //System.out.println("Precompiling java stubs");
+//            LOG.info(this, "Precompiling java stubs");
             String[] sourceDirs = 
                     sourcePath.split(Pattern.quote(File.pathSeparator));
             for ( String sourceDir : sourceDirs ){
-                javaStubCompiler.compileDirectory(
-                        new File(sourceDir), 
-                        new File(sourceDir),
-                        javaStubDirectory, 
-                        true
-                );
+                try {                
+                    javaStubCompiler.compileDirectory(
+                            new File(sourceDir), 
+                            new File(sourceDir),
+                            javaStubDirectory, 
+                            true
+                    );
+                }
+                catch( Exception e)
+                {
+                    LOG.exception(this, e);
+                }
                 
             }
-            //System.out.println("Finished precompiling java stubs");
+//            LOG.info(this, "Finished precompiling java stubs");
         }
         
         // Deal with macros in the macroclasspath
@@ -243,6 +266,7 @@ public class WLMirahCompiler {
 
                         });
                     } catch (IOException ex) {
+//                        LOG.exception(this, ex);
                         Logger.getLogger(WLMirahCompiler.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else if ( path.endsWith(".jar")){
@@ -264,20 +288,20 @@ public class WLMirahCompiler {
                                 bootstrapClasses.add(pkgName.toString());
                             }
                     } catch (FileNotFoundException ex) {
+//                        LOG.exception(this, ex);
                         Logger.getLogger(WLMirahCompiler.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IOException ex) {
+//                        LOG.exception(this, ex);
                         Logger.getLogger(WLMirahCompiler.class.getName()).log(Level.SEVERE, null, ex);
                     } finally {
                         try {
                             if ( zip != null ) zip.close();
                         } catch (IOException ex) {
+//                            LOG.exception(this, ex);
                             Logger.getLogger(WLMirahCompiler.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 }
-                
-                
-                
             }
             
             for ( String pkgName : bootstrapClasses ){
@@ -286,14 +310,23 @@ public class WLMirahCompiler {
                         .append(pkgName)
                         .append("::Bootstrap::loadExtensions");
             }
+//            LOG.info(this, "fakeFileContents="+fakeFileContents.toString());
             
             getMirahc().addFakeFile("MacrosBootstrap.mirah", fakeFileContents.toString());
         }
         
-        //System.out.println("About to print directory "+javaStubDirectory);
+//        LOG.info(this, "About to print directory "+javaStubDirectory);
+//        LOG.info(this, "getMirahc()="+getMirahc());
         //printDirectory(javaStubDirectory);
-        return getMirahc().compile(args);
-        
+        try {
+            return getMirahc().compile(args);
+        }
+        catch( Exception e)
+        {
+            LOG.info(this,"EX = "+e);
+//            LOG.exception(this, e);
+        }
+        return -1;
         
     }
     

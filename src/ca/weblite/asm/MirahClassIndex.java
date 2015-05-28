@@ -386,7 +386,6 @@ public class MirahClassIndex {
             }
             try {
                 File mFile = new File(parts[0], ".mirahmtimes");
-                
                 readMtimes(mFile);
             } catch ( FileNotFoundException fnfe){
                 LOG.exception(this, fnfe);
