@@ -24,6 +24,8 @@ import org.mirah.jvm.mirrors.debug.DebuggerInterface;
 import org.mirah.tool.Mirahc;
 import org.mirah.util.SimpleDiagnostics;
 
+import javax.tools.DiagnosticListener;
+
 /**
  *
  * @author shannah
@@ -47,7 +49,7 @@ public class WLMirahCompiler {
     private File classCacheDirectory;
     private File javaStubDirectory;
     private String jvmVersion;
-    private SimpleDiagnostics diagnostics;
+    private DiagnosticListener diagnostics;
     private DebuggerInterface debugger;
     
     private final Map<String,String> fakeFiles = new HashMap<>();
@@ -391,14 +393,14 @@ public class WLMirahCompiler {
     /**
      * @return the diagnostics
      */
-    public SimpleDiagnostics getDiagnostics() {
+    public DiagnosticListener getDiagnostics() {
         return diagnostics;
     }
 
     /**
      * @param diagnostics the diagnostics to set
      */
-    public void setDiagnostics(SimpleDiagnostics diagnostics) {
+    public void setDiagnostics(DiagnosticListener diagnostics) {
         this.diagnostics = diagnostics;
     }
 
